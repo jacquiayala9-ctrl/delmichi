@@ -55,12 +55,11 @@ export default function Navbar() {
             <div className="flex-shrink-0 flex items-center">
               <Link href="/" className="flex items-center gap-3 group">
                 <div className="relative w-12 h-12 sm:w-16 sm:h-16 group-hover:scale-105 transition-transform duration-300">
-                  {/* El truco invert + mix-blend-screen vuelve blanco al gato negro y hace transparente el fondo blanco sobre un fondo oscuro */}
                   <Image 
-                    src="/images/logo.png" 
+                    src="/images/logo_transparent.png" 
                     alt="Delmichi Logo" 
                     fill 
-                    className="object-contain invert mix-blend-screen drop-shadow-md"
+                    className="object-contain drop-shadow-md"
                     priority
                   />
                 </div>
