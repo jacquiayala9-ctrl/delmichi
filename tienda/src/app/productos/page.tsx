@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import ProductCard from "@/components/ProductCard";
 import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
