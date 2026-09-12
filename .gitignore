@@ -1,0 +1,28 @@
+# Secrets & Credentials (CRITICAL: NEVER COMMIT)
+supabase_credentials.md
+*.env*
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+tienda/node_modules/
+
+# Next.js build outputs
+.next/
+tienda/.next/
+out/
+tienda/out/
+build/
+tienda/build/
+
+# Obsidian local configs
+.obsidian/
+
+# OS & Logs
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
