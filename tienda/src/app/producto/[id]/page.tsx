@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
 import Link from "next/link";
