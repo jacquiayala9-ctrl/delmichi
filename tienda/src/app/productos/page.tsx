@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabaseClient";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Product } from "@/types/database";
+import MobileCategorySelect from "@/components/MobileCategorySelect";
 
 // Optional: prevent caching for real-time inventory
 export const dynamic = "force-dynamic";
@@ -117,26 +118,11 @@ export default async function Catalogo({
           </div>
 
           {/* Mobile Categories Select */}
-          <div className="md:hidden">
-            <div className="relative">
-              <select 
-                className="w-full appearance-none bg-[#12071f] border border-border-violet/50 text-secondary text-xs font-medium tracking-widest uppercase p-4 pr-10 focus:outline-none focus:border-accent-violet focus:shadow-glow transition-all"
-                value={categoryFilter || "todos"}
-                onChange={(e) => {
-                  window.location.href = getFilterUrl(e.target.value);
-                }}
-              >
-                {categories.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-accent-violet">
-                ▼
-              </div>
-            </div>
-          </div>
+          <MobileCategorySelect 
+            categories={categories} 
+            currentCategory={categoryFilter} 
+            sortOption={sortOption} 
+          />
         </aside>
 
         {/* Product Grid */}
