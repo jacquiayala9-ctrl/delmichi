@@ -29,4 +29,6 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 -- 3. Ascender a 'admin' si ya se había registrado con anterioridad (para evitar que se quede estancada como cliente)
 UPDATE public.profiles 
 SET role = 'admin' 
-WHERE email = 'jacquiayala9@gmail.com';
+WHERE id IN (
+  SELECT id FROM auth.users WHERE email = 'jacquiayala9@gmail.com'
+);
