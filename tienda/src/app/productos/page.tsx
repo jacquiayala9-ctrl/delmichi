@@ -89,7 +89,7 @@ export default async function Catalogo({
       <div className="flex flex-col items-center mb-8 text-center">
         <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-4">NUESTROS PRODUCTOS</h1>
         <div className="w-24 h-0.5 bg-accent-violet shadow-glow mb-6"></div>
-        <p className="text-secondary max-w-2xl">Articulos unicos y nuevos cada semana</p>
+        <p className="text-secondary max-w-2xl">Articulos unicos y nuevos cada semana.</p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
