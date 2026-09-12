@@ -23,9 +23,10 @@ export default function HeroSlider() {
       } else {
         // Fallback images if database is empty or error
         setHeroImages([
-          "/images/anillonegro.jpg",
-          "/images/calaveras.jpg",
-          "/images/palos.jpg",
+          "/images/slider/slide1.jpg",
+          "/images/slider/slide2.jpg",
+          "/images/slider/slide3.jpg",
+          "/images/slider/slide4.jpg",
         ])
       }
     }
