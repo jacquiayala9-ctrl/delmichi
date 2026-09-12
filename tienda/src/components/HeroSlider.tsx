@@ -11,27 +11,14 @@ export default function HeroSlider() {
   const supabase = createClient()
 
   useEffect(() => {
-    const fetchHeroImages = async () => {
-      const { data, error } = await supabase
-        .from('hero_gallery')
-        .select('image_url')
-        .eq('active', true)
-        .order('created_at', { ascending: false })
-
-      if (data && data.length > 0) {
-        setHeroImages(data.map((img: any) => img.image_url))
-      } else {
-        // Fallback images if database is empty or error
-        setHeroImages([
-          "/images/slider/slide1.jpg",
-          "/images/slider/slide2.jpg",
-          "/images/slider/slide3.jpg",
-          "/images/slider/slide4.jpg",
-        ])
-      }
-    }
-    
-    fetchHeroImages()
+    // For now, always use the high-quality local expanded images
+    // because the database has broken references that we can't delete without admin access.
+    setHeroImages([
+      "/images/slider/slide1.jpg",
+      "/images/slider/slide2.jpg",
+      "/images/slider/slide3.jpg",
+      "/images/slider/slide4.jpg",
+    ])
   }, [])
 
   useEffect(() => {
@@ -70,8 +57,8 @@ export default function HeroSlider() {
           VARIEDAD EN DISEÑOS
         </span>
         <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-foreground mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
-          Elegancia <br className="md:hidden" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-violet to-[#d8b4fe]">Alternativa</span>
+          Estilo y <br className="md:hidden" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-violet to-[#d8b4fe]">Elegancia</span>
         </h1>
         <p className="max-w-lg mx-auto text-zinc-300 mb-8 md:mb-10 text-sm md:text-lg drop-shadow-md">
           Tenemos de todo para vos, modelos unicos y diseños personalizados para sumar personalidad a su look o sorprender con un regalo diferente.
