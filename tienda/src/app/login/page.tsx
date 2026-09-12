@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import LoginForm from './LoginForm'
 
 export default async function LoginPage({
