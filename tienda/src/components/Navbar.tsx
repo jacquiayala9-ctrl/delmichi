@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 import { useCartStore } from "@/store/useCart";
 import { createClient } from "@/utils/supabase/client";
@@ -52,13 +53,16 @@ export default function Navbar() {
             
             {/* Logo Section (Left) */}
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="flex flex-col group">
-                <span className="font-heading text-2xl tracking-widest text-foreground group-hover:text-accent-violet transition-colors duration-300">
-                  DELMICHI
-                </span>
-                <span className="text-[0.65rem] uppercase tracking-[0.2em] text-secondary mt-0.5">
-                  Joyas & Accesorios
-                </span>
+              <Link href="/" className="flex flex-col items-center group">
+                <div className="relative w-[140px] h-[40px] group-hover:opacity-90 transition-opacity duration-300">
+                  <Image 
+                    src="/images/logo.png" 
+                    alt="Delmichi Logo" 
+                    fill 
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               </Link>
             </div>
 
