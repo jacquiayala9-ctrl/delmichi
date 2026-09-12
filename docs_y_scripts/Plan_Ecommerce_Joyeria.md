@@ -50,6 +50,22 @@ Incluye un **Panel de Administración Privado (`/admin`)** para que el administr
 
 ---
 
+## 🔄 Flujo de Trabajo y Despliegue Automático (CI/CD)
+
+El proyecto cuenta con un entorno de integración y despliegue continuo completamente automatizado mediante **GitHub Actions**. Para evitar errores y mantener la sincronización, **todas las modificaciones se realizan de forma local a través de código y comandos CLI, nunca desde los paneles web (Cloudflare/Supabase)**.
+
+**El flujo es el siguiente:**
+1. **Petición del usuario:** Solicita un cambio visual o de backend al asistente inteligente.
+2. **Desarrollo Local:**
+   - *Cambios Visuales (Frontend):* Se modifican los archivos de Next.js (React/Tailwind) en el directorio `tienda/`.
+   - *Cambios Base de Datos (Backend):* Se genera una nueva migración SQL utilizando el CLI de Supabase (`npx supabase migration new <nombre>`). El código SQL va dentro de `tienda/supabase/migrations/`.
+3. **Commit y Push a GitHub:** Una vez que el código local funciona, se suben los cambios al repositorio privado (`git commit && git push`).
+4. **Automatización en la Nube:**
+   - **Frontend:** Cloudflare Pages detecta el push en `main` y redespliega la web automáticamente en el dominio `delmichi.pages.dev`.
+   - **Backend:** GitHub Actions ejecuta el workflow `supabase.yml` que corre los nuevos archivos de migración contra la base de datos productiva de Supabase, manteniendo los esquemas y políticas siempre actualizados.
+
+---
+
 ## 🔐 Gestión de Usuarios y Roles
 
 ### 1. Clientes (Público)
