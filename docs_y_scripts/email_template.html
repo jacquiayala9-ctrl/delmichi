@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background-color: #09040e;
+      color: #e4e4e7;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: #12071f;
+      border: 1px solid #4c1d95;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .header {
+      background-color: #2e1065;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 3px;
+      font-weight: normal;
+    }
+    .content {
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .content h2 {
+      color: #ffffff;
+      margin-top: 0;
+      font-weight: normal;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 35px;
+      color: #d4d4d8;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #8a2be2;
+      color: #ffffff !important;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid #a855f7;
+    }
+    .footer {
+      background-color: #09040e;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: #71717a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>DELMICHI</h1>
+    </div>
+    <div class="content">
+      <h2>¡Bienvenida a la colección!</h2>
+      <p>Estás a un solo paso de acceder a nuestra tienda y ver tus futuros pedidos. Por favor, confirma tu correo electrónico haciendo clic en el siguiente botón:</p>
+      
+      <!-- ESTA ES LA VARIABLE MÁGICA DE SUPABASE QUE GENERA EL LINK -->
+      <a href="{{ .ConfirmationURL }}" class="btn">Confirmar mi Cuenta</a>
+      
+      <p style="margin-top: 40px; font-size: 13px; color: #a1a1aa;">Si no solicitaste crear esta cuenta, puedes ignorar este mensaje de forma segura.</p>
+    </div>
+    <div class="footer">
+      &copy; 2026 Delmichi Tienda. Joyería alternativa y artesanal.
+    </div>
+  </div>
+</body>
+</html>
