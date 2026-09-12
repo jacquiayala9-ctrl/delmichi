@@ -82,28 +82,43 @@ export default function Navbar() {
               
               {/* Productos Dropdown */}
               <div className="group relative">
-                <Link href="/catalogo" className={`text-sm tracking-widest uppercase transition-colors hover:text-accent-violet flex items-center gap-1 ${pathname.includes('/catalogo') ? 'text-accent-violet font-medium' : 'text-secondary'}`}>
+                <Link href="/productos" className={`text-sm tracking-widest uppercase transition-colors hover:text-accent-violet flex items-center gap-1 ${pathname.includes('/productos') ? 'text-accent-violet font-medium' : 'text-secondary'}`}>
                   Productos
                 </Link>
                 
                 {/* Dropdown Menu */}
-                <div className="absolute top-full left-0 mt-2 w-48 bg-[#0c0514] border border-border-violet/50 shadow-glow opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0">
+                <div className="absolute top-full left-0 mt-2 w-56 bg-[#0c0514] border border-border-violet/50 shadow-glow opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top -translate-y-2 group-hover:translate-y-0">
                   <div className="flex flex-col py-2">
-                    <Link href="/catalogo" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                    <Link href="/productos" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
                       Ver Todo
                     </Link>
                     <div className="my-1 border-t border-border-violet/30"></div>
-                    <Link href="/catalogo?categoria=chokers" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                    <Link href="/productos?categoria=chokers%26collares" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
                       Chokers & Collares
                     </Link>
-                    <Link href="/catalogo?categoria=anillos" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Anillos y Midis
+                    <Link href="/productos?categoria=anillos%26midis" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Anillos & Midis
                     </Link>
-                    <Link href="/catalogo?categoria=pulseras" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                    <Link href="/productos?categoria=pulseras" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
                       Pulseras
                     </Link>
-                    <Link href="/catalogo?categoria=accesorios" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Accesorios
+                    <Link href="/productos?categoria=aros" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Aros
+                    </Link>
+                    <Link href="/productos?categoria=garters" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Garters
+                    </Link>
+                    <Link href="/productos?categoria=cintos" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Cintos
+                    </Link>
+                    <Link href="/productos?categoria=medias" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Medias
+                    </Link>
+                    <Link href="/productos?categoria=cancanes red" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Cancanes red
+                    </Link>
+                    <Link href="/productos?categoria=guantes" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                      Guantes
                     </Link>
                   </div>
                 </div>
@@ -154,11 +169,16 @@ export default function Navbar() {
               <div className="px-2 py-2">
                 <span className="text-foreground uppercase tracking-widest text-sm font-medium mb-3 block">Productos</span>
                 <div className="flex flex-col pl-4 border-l border-border-violet/30 space-y-3 mt-2">
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/catalogo" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Ver Todo</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/catalogo?categoria=chokers" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Chokers & Collares</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/catalogo?categoria=anillos" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Anillos y Midis</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/catalogo?categoria=pulseras" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Pulseras</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/catalogo?categoria=accesorios" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Accesorios</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Ver Todo</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=chokers%26collares" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Chokers & Collares</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=anillos%26midis" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Anillos & Midis</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=pulseras" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Pulseras</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=aros" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Aros</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=garters" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Garters</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=cintos" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Cintos</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=medias" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Medias</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=cancanes red" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Cancanes red</Link>
+                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=guantes" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Guantes</Link>
                 </div>
               </div>
               

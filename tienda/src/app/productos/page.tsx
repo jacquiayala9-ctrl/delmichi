@@ -67,17 +67,47 @@ export default async function Catalogo({
     if (ord) searchParams.set("orden", ord);
     else if (sortOption) searchParams.set("orden", sortOption);
     
-    return `/catalogo?${searchParams.toString()}`;
+    return `/productos?${searchParams.toString()}`;
   };
 
-  const categorias = ["Todos", "Chokers", "Collares", "Anillos", "Pulseras", "Accesorios"];
+  const categories = [
+    { label: "Todos", value: "todos" },
+    { label: "Chokers&Collares", value: "chokers&collares" },
+    { label: "Anillos&Midis", value: "anillos&midis" },
+    { label: "Pulseras", value: "pulseras" },
+    { label: "Aros", value: "aros" },
+    { label: "Garters", value: "garters" },
+    { label: "Cintos", value: "cintos" },
+    { label: "Medias", value: "medias" },
+    { label: "Cancanes red", value: "cancanes red" },
+    { label: "Guantes", value: "guantes" }
+  ];
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-      <div className="flex flex-col items-center mb-16 text-center">
-        <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-4">Nuestro Catálogo</h1>
+      <div className="flex flex-col items-center mb-8 text-center">
+        <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-4">NUESTROS PRODUCTOS</h1>
         <div className="w-24 h-0.5 bg-accent-violet shadow-glow mb-6"></div>
-        <p className="text-secondary max-w-2xl">Descubre piezas únicas diseñadas para resaltar tu oscuridad interior.</p>
+        <p className="text-secondary max-w-2xl">Articulos unicos y nuevos cada semana</p>
+      </div>
+
+      <div className="w-full flex overflow-x-auto pb-4 mb-10 scrollbar-hide justify-start lg:justify-center gap-3">
+        {categories.map((cat) => {
+          const isSelected = categoryFilter === cat.value || (!categoryFilter && cat.value === "todos");
+          return (
+            <Link 
+              key={cat.value}
+              href={getFilterUrl(cat.value)}
+              className={`whitespace-nowrap px-6 py-2 border text-sm uppercase tracking-widest transition-all duration-300 ${
+                isSelected 
+                  ? 'border-accent-violet bg-accent-violet/10 text-accent-violet font-bold shadow-[0_0_10px_rgba(139,92,246,0.3)]' 
+                  : 'border-border-violet/30 text-secondary hover:border-accent-violet hover:text-accent-violet hover:bg-[#12071f]'
+              }`}
+            >
+              {cat.label}
+            </Link>
+          );
+        })}
       </div>
 
       <div className="flex flex-col gap-8">

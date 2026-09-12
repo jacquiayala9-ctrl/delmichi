@@ -43,7 +43,7 @@ export default async function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[800px] md:h-[500px]">
             {/* Chokers (Large left) */}
-            <Link href="/catalogo?categoria=chokers" className="group relative overflow-hidden bg-[#12071f] md:row-span-2">
+            <Link href="/productos?categoria=chokers%26collares" className="group relative overflow-hidden bg-[#12071f] md:row-span-2">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-70"></div>
               <Image 
                 src="https://images.unsplash.com/photo-1599643477877-530eb83abc8e?q=80&w=800&auto=format&fit=crop" 
@@ -58,7 +58,7 @@ export default async function Home() {
             </Link>
             
             {/* Anillos (Top right) */}
-            <Link href="/catalogo?categoria=anillos" className="group relative overflow-hidden bg-[#12071f] md:col-span-2">
+            <Link href="/productos?categoria=anillos%26midis" className="group relative overflow-hidden bg-[#12071f] md:col-span-2">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-70"></div>
               <Image 
                 src="https://images.unsplash.com/photo-1590544521484-63304918e6ec?q=80&w=800&auto=format&fit=crop" 
@@ -73,7 +73,7 @@ export default async function Home() {
             </Link>
             
             {/* Accesorios (Bottom right - half) */}
-            <Link href="/catalogo?categoria=accesorios" className="group relative overflow-hidden bg-[#12071f]">
+            <Link href="/productos?categoria=aros" className="group relative overflow-hidden bg-[#12071f]">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-70"></div>
               <Image 
                 src="https://images.unsplash.com/photo-1629224316810-9d8805b95e76?q=80&w=800&auto=format&fit=crop" 
@@ -88,7 +88,7 @@ export default async function Home() {
             </Link>
 
             {/* Pulseras (Bottom right - half) */}
-            <Link href="/catalogo?categoria=pulseras" className="group relative overflow-hidden bg-[#12071f]">
+            <Link href="/productos?categoria=pulseras" className="group relative overflow-hidden bg-[#12071f]">
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-opacity duration-300 group-hover:opacity-70"></div>
               <Image 
                 src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=800&auto=format&fit=crop" 
@@ -133,7 +133,7 @@ export default async function Home() {
           
           <div className="mt-16 text-center">
             <Link 
-              href="/catalogo" 
+              href="/productos" 
               className="inline-block border border-border-violet text-foreground hover:border-accent-violet hover:text-accent-violet hover:shadow-glow px-8 py-3 uppercase tracking-widest text-sm transition-all duration-300"
             >
               Ver Todo

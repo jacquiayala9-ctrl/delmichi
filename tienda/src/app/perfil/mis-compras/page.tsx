@@ -103,7 +103,7 @@ export default async function MisComprasPage() {
             Tus pedidos confirmados y su estado de envío aparecerán detallados aquí.
           </p>
           <Link
-            href="/catalogo"
+            href="/productos"
             className="inline-flex items-center gap-2 bg-accent-violet hover:bg-white hover:text-black text-white px-6 py-3 uppercase tracking-widest text-xs font-semibold transition-all duration-300 shadow-glow"
           >
             <ShoppingBag size={16} /> Explorar Joyería

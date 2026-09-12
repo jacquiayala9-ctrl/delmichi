@@ -13,7 +13,7 @@ export default function CartPage() {
         <h1 className="text-3xl font-serif text-accent-violet/90 mb-4">Tu Carrito está vacío</h1>
         <p className="text-zinc-400 mb-8 text-center max-w-md">Parece que aún no has encontrado esa pieza especial para tu colección.</p>
         <Link 
-          href="/catalogo" 
+          href="/productos" 
           className="bg-accent-violet hover:bg-[#a855f7] text-white font-medium px-8 py-3 uppercase tracking-widest text-sm transition-all duration-300 shadow-glow"
         >
           Explorar Joyas

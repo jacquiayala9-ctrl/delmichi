@@ -66,20 +66,20 @@ export default function HeroSlider() {
       {/* Content */}
       <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto">
         <span className="text-accent-violet text-xs md:text-sm tracking-[0.3em] uppercase mb-4 md:mb-6 animate-pulse">
-          Nueva Colección
+          VARIEDAD EN DISEÑOS
         </span>
         <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-foreground mb-4 md:mb-6 drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]">
           Elegancia <br className="md:hidden" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-violet to-[#d8b4fe]">Alternativa</span>
         </h1>
         <p className="max-w-lg mx-auto text-zinc-300 mb-8 md:mb-10 text-sm md:text-lg drop-shadow-md">
-          Joyas forjadas en las sombras para quienes abrazan la oscuridad con estilo.
+          Tenemos de todo para vos, modelos unicos y diseños personalizados para sumar personalidad a su look o sorprender con un regalo diferente.
         </p>
         <Link 
-          href="/catalogo" 
+          href="/productos" 
           className="inline-block bg-accent-violet hover:bg-white hover:text-black text-white font-medium px-8 py-3 md:px-10 md:py-4 uppercase tracking-widest text-xs md:text-sm transition-all duration-300 shadow-glow"
         >
-          Explorar Catálogo
+          EXPLORAR PRODUCTOS
         </Link>
       </div>
 

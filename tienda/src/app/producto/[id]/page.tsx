@@ -50,7 +50,7 @@ export default async function ProductDetail({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
       
       {/* Breadcrumb / Back button */}
-      <Link href="/catalogo" className="inline-flex items-center text-sm text-secondary hover:text-accent-violet transition-colors mb-8 group">
+      <Link href="/productos" className="inline-flex items-center text-sm text-secondary hover:text-accent-violet transition-colors mb-8 group">
         <ChevronLeft size={16} className="mr-1 group-hover:-translate-x-1 transition-transform" />
         Volver al catálogo
       </Link>

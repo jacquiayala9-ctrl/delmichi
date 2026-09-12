@@ -19,10 +19,10 @@ export default function Footer() {
           <div>
             <h3 className="font-heading text-lg mb-4 text-foreground">Categorías</h3>
             <ul className="space-y-3">
-              <li><Link href="/catalogo?categoria=chokers" className="text-secondary hover:text-accent-violet text-sm transition-colors">Chokers & Collares</Link></li>
-              <li><Link href="/catalogo?categoria=anillos" className="text-secondary hover:text-accent-violet text-sm transition-colors">Anillos</Link></li>
-              <li><Link href="/catalogo?categoria=pulseras" className="text-secondary hover:text-accent-violet text-sm transition-colors">Pulseras</Link></li>
-              <li><Link href="/catalogo?categoria=accesorios" className="text-secondary hover:text-accent-violet text-sm transition-colors">Accesorios</Link></li>
+              <li><Link href="/productos?categoria=chokers%26collares" className="text-secondary hover:text-accent-violet text-sm transition-colors">Chokers & Collares</Link></li>
+              <li><Link href="/productos?categoria=anillos%26midis" className="text-secondary hover:text-accent-violet text-sm transition-colors">Anillos & Midis</Link></li>
+              <li><Link href="/productos?categoria=pulseras" className="text-secondary hover:text-accent-violet text-sm transition-colors">Pulseras</Link></li>
+              <li><Link href="/productos?categoria=aros" className="text-secondary hover:text-accent-violet text-sm transition-colors">Aros</Link></li>
             </ul>
           </div>
 

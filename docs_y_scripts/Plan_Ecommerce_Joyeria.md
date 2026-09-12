@@ -120,3 +120,16 @@ El proyecto cuenta con un entorno de integración y despliegue continuo completa
 - [ ] **Tarea 6.4:** Subida directa de archivos al bucket de Supabase Storage en vez de URL manual.
 - [ ] **Tarea 6.5:** Gestión de órdenes de clientes y cambio de estados de envío.
 
+---
+
+## 📱 Textos e Inspiración (Instagram)
+
+Textos extraídos para uso en la web y redes:
+- "Tenemos de todo para vos!"
+- "Ya saben! Siempre encontrarán algo nuevo 😁"
+- "Buscas cruces? Tenemos de todos los tamaños !"
+- "Únicos modelos!"
+- "Hagan sus pedidos personalizados!"
+- "Cada diseño combina tendencias actuales con ese toque único que hace que cada pieza sea especial, ideal para fans que quieren sumar personalidad a su look o sorprender con un regalo diferente."
+- "Diseños 100% artesanales"
+
