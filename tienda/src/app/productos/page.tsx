@@ -91,28 +91,56 @@ export default async function Catalogo({
         <p className="text-secondary max-w-2xl">Articulos unicos y nuevos cada semana</p>
       </div>
 
-      <div className="w-full flex overflow-x-auto pb-4 mb-10 scrollbar-hide justify-start lg:justify-center gap-3">
-        {categories.map((cat) => {
-          const isSelected = categoryFilter === cat.value || (!categoryFilter && cat.value === "todos");
-          return (
-            <Link 
-              key={cat.value}
-              href={getFilterUrl(cat.value)}
-              className={`whitespace-nowrap px-6 py-2 border text-sm uppercase tracking-widest transition-all duration-300 ${
-                isSelected 
-                  ? 'border-accent-violet bg-accent-violet/10 text-accent-violet font-bold shadow-[0_0_10px_rgba(139,92,246,0.3)]' 
-                  : 'border-border-violet/30 text-secondary hover:border-accent-violet hover:text-accent-violet hover:bg-[#12071f]'
-              }`}
-            >
-              {cat.label}
-            </Link>
-          );
-        })}
-      </div>
+      <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
+        {/* Sidebar */}
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <h2 className="text-xl font-heading text-foreground mb-4 border-b border-border-violet/30 pb-2 hidden md:block">Categorías</h2>
+          
+          {/* Desktop Categories */}
+          <div className="hidden md:flex flex-col gap-2">
+            {categories.map((cat) => {
+              const isSelected = categoryFilter === cat.value || (!categoryFilter && cat.value === "todos");
+              return (
+                <Link 
+                  key={cat.value}
+                  href={getFilterUrl(cat.value)}
+                  className={`px-4 py-3 text-xs tracking-widest uppercase transition-all duration-300 border-l-2 ${
+                    isSelected 
+                      ? 'border-accent-violet text-accent-violet font-bold bg-[#12071f]' 
+                      : 'border-transparent text-secondary hover:border-accent-violet/50 hover:text-accent-violet'
+                  }`}
+                >
+                  {cat.label}
+                </Link>
+              );
+            })}
+          </div>
 
-      <div className="flex flex-col gap-8">
+          {/* Mobile Categories Select */}
+          <div className="md:hidden">
+            <div className="relative">
+              <select 
+                className="w-full appearance-none bg-[#12071f] border border-border-violet/50 text-secondary text-xs font-medium tracking-widest uppercase p-4 pr-10 focus:outline-none focus:border-accent-violet focus:shadow-glow transition-all"
+                value={categoryFilter || "todos"}
+                onChange={(e) => {
+                  window.location.href = getFilterUrl(e.target.value);
+                }}
+              >
+                {categories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-accent-violet">
+                ▼
+              </div>
+            </div>
+          </div>
+        </aside>
+
         {/* Product Grid */}
-        <div className="w-full">
+        <div className="flex-1 w-full">
           {(!products || products.length === 0) ? (
              <div className="text-center py-20 border border-border-violet/30 bg-[#12071f]/20">
                <h3 className="text-xl text-secondary font-heading mb-2">No se encontraron piezas</h3>
