@@ -1,11 +1,49 @@
 'use client'
 
+import { useState } from 'react'
 import { useCartStore } from '@/store/useCart'
 import Link from 'next/link'
 import { Trash2, Plus, Minus } from 'lucide-react'
+import { createClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCartStore()
+  const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const [email, setEmail] = useState('')
+  const supabase = createClient()
+  const router = useRouter()
+
+  const handleCheckout = async () => {
+    setIsCheckingOut(true)
+    
+    // Check if user is logged in
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    const orderData = {
+      user_id: user ? user.id : null,
+      cliente_email: user ? user.email : (email || 'invitado@example.com'),
+      total: totalPrice,
+      estado: 'Pendiente',
+      items: items,
+      direccion_envio: {}
+    }
+
+    const { error } = await supabase.from('orders').insert([orderData])
+    
+    if (error) {
+      alert('Hubo un error procesando tu pedido.')
+    } else {
+      alert('¡Pedido realizado con éxito!')
+      clearCart()
+      if (user) {
+        router.push('/perfil')
+      } else {
+        router.push('/')
+      }
+    }
+    setIsCheckingOut(false)
+  }
 
   if (items.length === 0) {
     return (
@@ -94,18 +132,33 @@ export default function CartPage() {
           </div>
           <div className="flex justify-between items-center mb-6 text-zinc-300">
             <span>Envío</span>
-            <span className="text-sm text-zinc-500">Calculado al pagar</span>
+            <span className="text-sm text-zinc-500">A coordinar</span>
           </div>
           
-          <div className="flex justify-between items-center pt-4 border-t border-zinc-800 mb-8">
+          <div className="flex justify-between items-center pt-4 border-t border-zinc-800 mb-6">
             <span className="font-medium text-lg">Total</span>
             <span className="font-bold text-lg text-accent-violet">
               ${totalPrice.toLocaleString("es-AR", { minimumFractionDigits: 2 })}
             </span>
           </div>
           
-          <button className="w-full bg-accent-violet hover:bg-white hover:text-black text-white font-medium py-3 tracking-widest text-sm uppercase transition-colors duration-300">
-            Finalizar Compra
+          <div className="mb-6">
+            <label className="block text-xs text-zinc-400 mb-1">Email de contacto (si no tienes cuenta)</label>
+            <input 
+              type="email" 
+              placeholder="tu@email.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full bg-black/50 border border-zinc-700 rounded p-2 text-sm focus:border-accent-violet outline-none" 
+            />
+          </div>
+
+          <button 
+            onClick={handleCheckout}
+            disabled={isCheckingOut}
+            className="w-full bg-accent-violet hover:bg-white hover:text-black text-white font-medium py-3 tracking-widest text-sm uppercase transition-colors duration-300 disabled:opacity-50"
+          >
+            {isCheckingOut ? 'Procesando...' : 'Finalizar Compra'}
           </button>
         </div>
       </div>

@@ -11,14 +11,15 @@ export default function HeroSlider() {
   const supabase = createClient()
 
   useEffect(() => {
-    // For now, always use the high-quality local expanded images
-    // because the database has broken references that we can't delete without admin access.
-    setHeroImages([
-      "/images/slider/slide1.jpg",
-      "/images/slider/slide2.jpg",
-      "/images/slider/slide3.jpg",
-      "/images/slider/slide4.jpg",
-    ])
+    const fetchHeroes = async () => {
+      const { data } = await supabase.from('hero_gallery').select('*').order('created_at', { ascending: false })
+      if (data && data.length > 0) {
+        setHeroImages(data.map(h => h.image_url))
+      } else {
+        setHeroImages([])
+      }
+    }
+    fetchHeroes()
   }, [])
 
   useEffect(() => {

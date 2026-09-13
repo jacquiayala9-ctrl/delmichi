@@ -108,17 +108,19 @@ El proyecto cuenta con un entorno de integración y despliegue continuo completa
 - [x] **Tarea 4.3:** Integración de Supabase Auth (Email, Contraseña y Google OAuth con `/auth/callback`) para clientes.
 - [x] **Tarea 4.4:** Crear página protegida del cliente `/perfil/mis-compras` para consultar el historial de órdenes y acceso según rol.
 
-### Etapa 5: Checkout y Pasarela de Pagos [PENDIENTE]
-- [ ] **Tarea 5.1:** Formulario de envío y facturación en `/checkout`.
-- [ ] **Tarea 5.2:** Integración con API de pasarela de pago (MercadoPago / Stripe).
-- [ ] **Tarea 5.3:** Webhook para confirmación de pago y actualización automática de stock en Supabase.
+### Etapa 5: Checkout y Pasarela de Pagos Diferida [COMPLETADA]
+- [x] **Tarea 5.1:** Formulario de envío y carrito lateral (`/carrito`).
+- [x] **Tarea 5.2:** Integración dinámica para finalizar compra redirigiendo a WhatsApp y Gmail pre-formateado.
+- [x] **Tarea 5.3:** Asentamiento automático de la orden en la base de datos de Supabase en el momento que se hace clic en Checkout.
 
-### Etapa 6: Panel de Administración Privado (`/admin`) [EN PROGRESO AVANZADO]
+### Etapa 6: Panel de Administración Privado (`/admin`) [COMPLETADA]
 - [x] **Tarea 6.1:** Autenticación exclusiva para rol administrador en `/admin` mediante consulta a `profiles`.
 - [x] **Tarea 6.2:** Dashboard con listado de productos, control rápido de stock, precios y gestión de portada (`hero_gallery`).
 - [x] **Tarea 6.3:** Formulario modal de creación y edición directa de productos en Supabase.
-- [ ] **Tarea 6.4:** Subida directa de archivos al bucket de Supabase Storage en vez de URL manual.
-- [ ] **Tarea 6.5:** Gestión de órdenes de clientes y cambio de estados de envío.
+- [x] **Tarea 6.4:** Subida directa de archivos y gestión de biblioteca visual (Storage) para evitar duplicados.
+- [x] **Tarea 6.5:** Pestaña "Ventas" con historial de órdenes, selector dinámico de estado de envío (Pendiente, Vendido, Completado, Cancelado) y eliminación masiva.
+- [x] **Tarea 6.6:** Pestaña "Categorías" para administrar de forma dinámica los filtros del catálogo web.
+- [x] **Tarea 6.7:** Pestaña "Ajustes" para edición en vivo del número de contacto, Instagram y correo del Footer.
 
 ---
 
@@ -132,4 +134,47 @@ Textos extraídos para uso en la web y redes:
 - "Hagan sus pedidos personalizados!"
 - "Cada diseño combina tendencias actuales con ese toque único que hace que cada pieza sea especial, ideal para fans que quieren sumar personalidad a su look o sorprender con un regalo diferente."
 - "Diseños 100% artesanales"
+
+---
+
+## 📖 Documentación Detallada del Sistema Construido (Para Futura Referencia)
+
+Para asegurar que todo el progreso y las características técnicas del desarrollo queden asentados de forma permanente tras cerrar este entorno, a continuación se detallan todas las funcionalidades implementadas hasta la fecha en la aplicación web:
+
+### 1. Panel de Administración (`/admin`)
+El corazón del proyecto. Un dashboard protegido, accesible únicamente si la base de datos detecta que el usuario tiene el rol `admin` en la tabla `profiles`. Cuenta con 6 pestañas principales que gobiernan toda la web:
+- **Gestión de Productos:** Permite crear, editar (nombre, precio, foto principal) y eliminar productos. Las fotos se suben directamente al bucket `productos` y el URL público se enlaza al artículo.
+- **Categorías:** Un sistema donde el admin crea "Tags" (ej. Anillos, Aros, Collares). Si una categoría se modifica o borra aquí, los filtros de la tienda en toda la web se adaptan al instante, y los productos sin categoría se ocultan temporalmente.
+- **Galería Principal (Hero):** Permite cambiar las imágenes del carrusel interactivo que aparece en la pantalla principal (`/`). Las fotos pueden activarse o desactivarse en un solo clic.
+- **Archivos (Storage):** Una biblioteca visual interna de todas las fotos subidas a Supabase Storage. El admin puede reutilizar enlaces (URLs) para evitar subidas duplicadas o borrar definitivamente la basura para no consumir espacio en la nube.
+- **Registro de Ventas:** Una tabla analítica de los pedidos realizados, generados automáticamente en el momento del checkout de un cliente. 
+  - Muestra una foto estática de la compra: Fecha, nombre del artículo comprado, cliente, cantidad total y precio total. (Esto evita errores si luego el admin borra el producto original de la tienda).
+  - Incluye un **menú desplegable dinámico** para cambiar en vivo el estado de preparación (Pendiente, Vendido, Completado, Cancelado).
+  - Incluye selección múltiple por casilleros (checkbox) para borrar masivamente historiales antiguos.
+- **Ajustes:** Edición en vivo de los datos de contacto de la tienda (Número de WhatsApp, Usuario de Instagram, Correo Público). La página lee y escribe directamente en la base de datos, por lo que el *Footer* (pie de página) de toda la web se actualiza al segundo.
+
+### 2. Catálogo Público (`/productos`)
+- **Buscador Funcional (Search):** Una barra de búsqueda en el menú superior que busca coincidencias ILIKE en los nombres de todos los productos de la tienda y redirige a la vista filtrada.
+- **Filtros por Categoría:** Extraídos de la tabla de categorías para evitar menús rotos o desactualizados.
+- **Ordenamiento Cliente/Servidor:** Un filtro desplegable flotante arriba de la grilla que ordena el inventario entero por "Precio: Menor/Mayor", "Alfabético: A-Z/Z-A" y "Más Recientes".
+
+### 3. Sistema de Compras y Carrito
+- **Carrito Persistente con Zustand:** Los usuarios pueden añadir productos y gestionar cantidades sin perder los datos al recargar la página (almacenado en caché / localstorage).
+- **Checkout Combinado (Web/WhatsApp/Gmail):** 
+  1. Al darle clic a finalizar la compra, el código JavaScript recorre el carrito, suma los totales, prepara un mensaje de texto amigable ("Hola, quisiera hacer este pedido...") y abre WhatsApp Web o Gmail.
+  2. Al *mismo milisegundo*, la tienda inyecta un registro silencioso en la tabla `orders` de Supabase con los datos del usuario y los ítems elegidos en formato JSON, para que el administrador lo vea reflejado en la pestaña de "Ventas" automáticamente sin tener que esperar que el cliente mande el WhatsApp.
+
+### 4. Base de Datos (Estructura Supabase)
+El proyecto utiliza estas tablas principales bajo PostgreSQL:
+- `products`: Catálogo de ítems (ID, nombre, precio, categoría, URL de imagen).
+- `categories`: Taxonomía (ID, nombre, slug).
+- `hero_images`: Imágenes de portada (URL, orden, activa).
+- `orders`: Histórico (Snapshot JSON de la venta, Total, Email del cliente, Dirección/Nombre, Estado).
+- `store_settings`: Metadatos Key-Value con restricción UNIQUE (`email`, `whatsapp`, `instagram`).
+- `profiles`: Creada por un trigger en Auth de Supabase, guarda el ID del usuario y si su `role` es `admin`.
+
+### 5. Reglas RLS (Seguridad a Nivel de Fila)
+Todas las tablas cuentan con políticas de seguridad integradas (RLS con `WITH CHECK` y `USING`) que bloquean ciberataques y previenen alteraciones desde la consola del navegador:
+- Todo el público puede usar el comando `SELECT` en productos, categorías e imágenes, y puede hacer `INSERT` únicamente en la tabla de ventas (pero no modificar ni borrar ventas ajenas).
+- Solo las cuentas donde `role = 'admin'` tienen permisos de `INSERT`, `UPDATE` y `DELETE` para cambiar configuraciones de la tienda, productos, fotos y eliminar o editar el estado de las órdenes.
 

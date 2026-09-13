@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, User, ShoppingBag, Menu, X, Settings, Shield } from "lucide-react";
 import { useCartStore } from "@/store/useCart";
 import { createClient } from "@/utils/supabase/client";
 
@@ -13,7 +13,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [categories, setCategories] = useState<{nombre: string, slug: string}[]>([]);
   
   const totalItems = useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
   const supabase = createClient();
@@ -21,12 +23,24 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
     // Escuchar cambios de autenticación
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setUser(session?.user ?? null)
+      if (session?.user) {
+        const { data } = await supabase.from('profiles').select('role').eq('id', session.user.id).single()
+        setIsAdmin(data?.role === 'admin')
+      } else {
+        setIsAdmin(false)
+      }
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null)
+      if (session?.user) {
+        const { data } = await supabase.from('profiles').select('role').eq('id', session.user.id).single()
+        setIsAdmin(data?.role === 'admin')
+      } else {
+        setIsAdmin(false)
+      }
     })
 
     const handleScroll = () => {
@@ -38,6 +52,12 @@ export default function Navbar() {
     };
     
     window.addEventListener("scroll", handleScroll);
+
+    const loadCategories = async () => {
+      const { data } = await supabase.from('categories').select('*').order('created_at', { ascending: true });
+      if (data) setCategories(data);
+    };
+    loadCategories();
 
     return () => {
       subscription.unsubscribe()
@@ -93,48 +113,46 @@ export default function Navbar() {
                       Ver Todo
                     </Link>
                     <div className="my-1 border-t border-border-violet/30"></div>
-                    <Link href="/productos?categoria=chokers%26collares" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Chokers & Collares
-                    </Link>
-                    <Link href="/productos?categoria=anillos%26midis" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Anillos & Midis
-                    </Link>
-                    <Link href="/productos?categoria=pulseras" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Pulseras
-                    </Link>
-                    <Link href="/productos?categoria=aros" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Aros
-                    </Link>
-                    <Link href="/productos?categoria=garters" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Garters
-                    </Link>
-                    <Link href="/productos?categoria=cintos" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Cintos
-                    </Link>
-                    <Link href="/productos?categoria=medias" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Medias
-                    </Link>
-                    <Link href="/productos?categoria=cancanes red" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Cancanes red
-                    </Link>
-                    <Link href="/productos?categoria=guantes" className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
-                      Guantes
-                    </Link>
+                    {categories.map((cat) => (
+                      <Link key={cat.slug} href={`/productos?categoria=${encodeURIComponent(cat.slug)}`} className="px-4 py-2 text-xs uppercase tracking-widest text-secondary hover:text-accent-violet hover:bg-[#12071f] transition-colors">
+                        {cat.nombre}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <Link href="/contacto" className={`text-sm tracking-widest uppercase transition-colors hover:text-accent-violet ${pathname === '/contacto' ? 'text-accent-violet font-medium' : 'text-secondary'}`}>
-                Contacto
+              <Link href="/contactos" className={`text-sm tracking-widest uppercase transition-colors hover:text-accent-violet ${pathname === '/contactos' ? 'text-accent-violet font-medium' : 'text-secondary'}`}>
+                Contactos
               </Link>
             </div>
 
             {/* Actions (Right) */}
             <div className="flex items-center space-x-5">
-              <button className="text-secondary hover:text-accent-violet transition-colors hidden sm:block" aria-label="Buscar">
-                <Search size={20} />
-              </button>
-              <Link href={user ? "/perfil/mis-compras" : "/login"} className="text-secondary hover:text-accent-violet transition-colors" aria-label="Perfil">
+              <form 
+                onSubmit={(e) => { 
+                  e.preventDefault(); 
+                  const val = new FormData(e.currentTarget).get('search'); 
+                  if (val) window.location.href = `/productos?search=${encodeURIComponent(val as string)}`; 
+                }} 
+                className="hidden sm:flex items-center relative group"
+              >
+                <input 
+                  type="text" 
+                  name="search"
+                  placeholder="Buscar..." 
+                  className="bg-[#12071f] border border-border-violet/30 rounded-full py-1.5 px-3 pl-9 text-xs text-zinc-300 focus:outline-none focus:border-accent-violet w-32 focus:w-48 transition-all duration-300"
+                />
+                <button type="submit" className="absolute left-3 text-secondary group-hover:text-accent-violet transition-colors">
+                  <Search size={14} />
+                </button>
+              </form>
+              {user && (
+                <Link href={isAdmin ? "/admin" : "/perfil"} className="text-secondary hover:text-accent-violet transition-colors" aria-label="Ajustes">
+                  <Settings size={20} />
+                </Link>
+              )}
+              <Link href={user ? "/perfil" : "/login"} className="text-secondary hover:text-accent-violet transition-colors" aria-label="Perfil">
                 <User size={20} />
               </Link>
               <Link href="/carrito" className="text-secondary hover:text-accent-violet transition-colors relative" aria-label="Carrito">
@@ -170,19 +188,15 @@ export default function Navbar() {
                 <span className="text-foreground uppercase tracking-widest text-sm font-medium mb-3 block">Productos</span>
                 <div className="flex flex-col pl-4 border-l border-border-violet/30 space-y-3 mt-2">
                   <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Ver Todo</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=chokers%26collares" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Chokers & Collares</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=anillos%26midis" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Anillos & Midis</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=pulseras" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Pulseras</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=aros" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Aros</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=garters" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Garters</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=cintos" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Cintos</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=medias" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Medias</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=cancanes red" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Cancanes red</Link>
-                  <Link onClick={() => setIsMobileMenuOpen(false)} href="/productos?categoria=guantes" className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">Guantes</Link>
+                  {categories.map((cat) => (
+                    <Link key={cat.slug} onClick={() => setIsMobileMenuOpen(false)} href={`/productos?categoria=${encodeURIComponent(cat.slug)}`} className="text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-xs">
+                      {cat.nombre}
+                    </Link>
+                  ))}
                 </div>
               </div>
               
-              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contacto" className="px-2 py-2 text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-sm font-medium">Contacto</Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} href="/contactos" className="px-2 py-2 text-secondary hover:text-accent-violet transition-all uppercase tracking-widest text-sm font-medium">Contactos</Link>
             </div>
           </div>
         )}

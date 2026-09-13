@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Product } from "@/types/database";
 import MobileCategorySelect from "@/components/MobileCategorySelect";
+import SortSelect from "@/components/SortSelect";
 
 // Optional: prevent caching for real-time inventory
 export const dynamic = "force-dynamic";
@@ -17,9 +18,15 @@ export default async function Catalogo({
   const params = await searchParams;
   const categoryFilter = typeof params.categoria === "string" ? params.categoria : null;
   const sortOption = typeof params.orden === "string" ? params.orden : "recientes";
+  const searchQuery = typeof params.search === "string" ? params.search : null;
 
-  // Base query
-  let query = supabase.from("products").select("*");
+  // Base query (exclude products with null category)
+  let query = supabase.from("products").select("*").not("categoria", "is", null);
+
+  // Apply search query
+  if (searchQuery) {
+    query = query.ilike("nombre", `%${searchQuery}%`);
+  }
 
   // Apply category filter
   if (categoryFilter && categoryFilter !== "todos") {
@@ -62,6 +69,8 @@ export default async function Catalogo({
   // Helper function for creating filter URLs
   const getFilterUrl = (cat?: string, ord?: string) => {
     const searchParams = new URLSearchParams();
+    if (searchQuery) searchParams.set("search", searchQuery);
+    
     if (cat) searchParams.set("categoria", cat);
     else if (categoryFilter) searchParams.set("categoria", categoryFilter);
     
@@ -71,17 +80,18 @@ export default async function Catalogo({
     return `/productos?${searchParams.toString()}`;
   };
 
+  // Fetch dynamic categories
+  let dbCategories: { nombre: string, slug: string }[] = [];
+  try {
+    const { data } = await supabase.from('categories').select('*').order('created_at', { ascending: true });
+    if (data) dbCategories = data;
+  } catch (err) {
+    console.warn("Could not fetch categories", err);
+  }
+
   const categories = [
     { label: "Todos", value: "todos" },
-    { label: "Chokers&Collares", value: "chokers&collares" },
-    { label: "Anillos&Midis", value: "anillos&midis" },
-    { label: "Pulseras", value: "pulseras" },
-    { label: "Aros", value: "aros" },
-    { label: "Garters", value: "garters" },
-    { label: "Cintos", value: "cintos" },
-    { label: "Medias", value: "medias" },
-    { label: "Cancanes red", value: "cancanes red" },
-    { label: "Guantes", value: "guantes" }
+    ...dbCategories.map(c => ({ label: c.nombre, value: c.slug }))
   ];
 
   return (
@@ -127,6 +137,28 @@ export default async function Catalogo({
 
         {/* Product Grid */}
         <div className="flex-1 w-full">
+          {/* Header row with search info and sort select */}
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6 pb-4 border-b border-border-violet/30 gap-4">
+            <div className="text-secondary text-sm">
+              {searchQuery ? (
+                <span>Resultados de búsqueda para: <span className="text-accent-violet font-bold">"{searchQuery}"</span></span>
+              ) : (
+                <span>Mostrando {products?.length || 0} piezas en <span className="capitalize text-white">{categoryFilter || "Todos"}</span></span>
+              )}
+            </div>
+            
+            {/* Desktop sorting */}
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="text-xs text-secondary uppercase tracking-widest">Ordenar por:</span>
+              <div className="relative">
+                <SortSelect currentSort={sortOption} />
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-accent-violet">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {(!products || products.length === 0) ? (
              <div className="text-center py-20 border border-border-violet/30 bg-[#12071f]/20">
                <h3 className="text-xl text-secondary font-heading mb-2">No se encontraron piezas</h3>

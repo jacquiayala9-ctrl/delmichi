@@ -18,6 +18,7 @@ export interface Database {
           stock: number
           categoria: string | null
           image_url: string | null
+          destacado: boolean
           created_at: string
         }
         Insert: {
@@ -28,6 +29,7 @@ export interface Database {
           stock?: number
           categoria?: string | null
           image_url?: string | null
+          destacado?: boolean
           created_at?: string
         }
         Update: {
@@ -38,6 +40,61 @@ export interface Database {
           stock?: number
           categoria?: string | null
           image_url?: string | null
+          destacado?: boolean
+          created_at?: string
+        }
+      }
+      categories: {
+        Row: {
+          id: string
+          nombre: string
+          slug: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          nombre: string
+          slug: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          nombre?: string
+          slug?: string
+          created_at?: string
+        }
+      }
+      store_settings: {
+        Row: {
+          id: string
+          key: string
+          value: string
+        }
+        Insert: {
+          id?: string
+          key: string
+          value: string
+        }
+        Update: {
+          id?: string
+          key?: string
+          value?: string
+        }
+      }
+      favorites: {
+        Row: {
+          user_id: string
+          product_id: string
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          product_id: string
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          product_id?: string
           created_at?: string
         }
       }
@@ -85,6 +142,7 @@ export interface Database {
         Row: {
           id: string
           cliente_email: string | null
+          user_id: string | null
           total: number | null
           estado: string | null
           direccion_envio: Json | null
@@ -94,6 +152,7 @@ export interface Database {
         Insert: {
           id?: string
           cliente_email?: string | null
+          user_id?: string | null
           total?: number | null
           estado?: string | null
           direccion_envio?: Json | null
@@ -103,6 +162,7 @@ export interface Database {
         Update: {
           id?: string
           cliente_email?: string | null
+          user_id?: string | null
           total?: number | null
           estado?: string | null
           direccion_envio?: Json | null
