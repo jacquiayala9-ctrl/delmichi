@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import ProductCard from "@/components/ProductCard";
 import HeroSlider from "@/components/HeroSlider";
 import Link from "next/link";
@@ -89,4 +88,5 @@ export default async function Home() {
     </div>
   );
 }
+
 

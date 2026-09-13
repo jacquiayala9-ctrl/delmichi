@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 import Link from 'next/link'
 
@@ -13,3 +12,4 @@ export default function NotFound() {
     </div>
   )
 }
+

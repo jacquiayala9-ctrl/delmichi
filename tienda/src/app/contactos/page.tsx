@@ -1,11 +1,12 @@
-export const runtime = 'edge';
-import { createClient } from '@/utils/supabase/server'
-import { cookies } from 'next/headers'
+import { createClient } from "@supabase/supabase-js"
 
-export const revalidate = 0; // Don't cache this page so settings are always fresh
+export const revalidate = 3600; // Revalidate every hour instead of 0 (dynamic)
 
 export default async function ContactosPage() {
-  const supabase = await createClient()
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
 
   const { data: settings } = await supabase.from('store_settings').select('*')
   
@@ -73,4 +74,5 @@ export default async function ContactosPage() {
     </div>
   )
 }
+
 

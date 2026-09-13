@@ -1,5 +1,4 @@
 'use client'
-export const runtime = 'edge';
 
 import { useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
@@ -115,5 +114,6 @@ export default function RegisterPage() {
     </div>
   )
 }
+
 
 

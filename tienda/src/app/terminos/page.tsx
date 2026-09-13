@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 export default function TerminosPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-24 min-h-[70vh]">
@@ -15,4 +14,5 @@ export default function TerminosPage() {
     </div>
   )
 }
+
 
