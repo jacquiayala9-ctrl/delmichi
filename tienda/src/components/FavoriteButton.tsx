@@ -5,7 +5,7 @@ import { Star } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function FavoriteButton({ productId }: { productId: string }) {
+export default function FavoriteButton({ productId, className }: { productId: string, className?: string }) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
@@ -65,7 +65,7 @@ export default function FavoriteButton({ productId }: { productId: string }) {
   return (
     <button
       onClick={toggleFavorite}
-      className={`absolute top-2 right-2 p-1.5 sm:p-2 z-30 transition-all duration-300 drop-shadow-md bg-black/20 rounded-full hover:bg-black/50 backdrop-blur-sm ${
+      className={`${className || "absolute bottom-1 right-1 sm:bottom-2 sm:right-2"} p-1.5 z-30 transition-all duration-300 drop-shadow-md bg-black/20 rounded-full hover:bg-black/50 backdrop-blur-sm ${
         isFavorited 
           ? "text-yellow-400 hover:text-yellow-300" 
           : "text-zinc-300 hover:text-white"
@@ -73,7 +73,7 @@ export default function FavoriteButton({ productId }: { productId: string }) {
       aria-label={isFavorited ? "Quitar de favoritos" : "Añadir a favoritos"}
     >
       <Star 
-        size={16} 
+        size={14} 
         className={isFavorited ? "fill-current" : "opacity-80"} 
       />
     </button>

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { ChevronLeft, Truck, RefreshCcw } from "lucide-react";
 import { Product } from "@/types/database";
 import ProductActions from "@/components/ProductActions";
+import FavoriteButton from "@/components/FavoriteButton";
 
 // Forcing dynamic so we always get the latest stock
 export const dynamic = "force-dynamic";
@@ -60,6 +61,8 @@ export default async function ProductDetail({
         {/* Product Image (Left) */}
         <div className="w-full md:w-1/2">
           <div className="relative w-full aspect-[4/5] bg-[#0c0514] border border-border-violet overflow-hidden group">
+            <FavoriteButton productId={product.id} className="absolute bottom-4 right-4 z-30" />
+            
             {/* Dark vignette effect */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_40%,_#09040e_100%)] z-10 pointer-events-none opacity-50"></div>
             
