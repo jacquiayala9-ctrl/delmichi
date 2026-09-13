@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCartStore } from "@/store/useCart";
+import FavoriteButton from "./FavoriteButton";
 
 interface ProductCardProps {
   id: string;
@@ -35,22 +36,26 @@ export default function ProductCard({ id, name, price, category, imageUrl }: Pro
     <div className="group relative flex flex-col bg-[#0c0514] border border-border-violet rounded-none overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-glow">
       
       {/* Image Container */}
-      <Link href={`/producto/${id}`} className="block relative w-full aspect-[4/5] overflow-hidden bg-[#12071f]">
-        <div className="absolute inset-0 bg-gradient-to-t from-[#09040e] to-transparent opacity-60 z-10 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"></div>
-        {/* Placeholder text incase image fails or is loading */}
-        <div className="absolute inset-0 flex items-center justify-center text-secondary/30">
-          <span className="font-heading opacity-30 text-4xl">D</span>
-        </div>
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105 z-10"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          />
-        )}
-      </Link>
+      <div className="relative w-full aspect-[4/5] bg-[#12071f] overflow-hidden">
+        <FavoriteButton productId={id} />
+        
+        <Link href={`/producto/${id}`} className="block absolute inset-0 z-10">
+          <div className="absolute inset-0 bg-gradient-to-t from-[#09040e] to-transparent opacity-60 pointer-events-none transition-opacity duration-300 group-hover:opacity-40"></div>
+          {/* Placeholder text incase image fails or is loading */}
+          <div className="absolute inset-0 flex items-center justify-center text-secondary/30">
+            <span className="font-heading opacity-30 text-4xl">D</span>
+          </div>
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={name}
+              fill
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            />
+          )}
+        </Link>
+      </div>
 
       {/* Content */}
       <div className="p-2 sm:p-5 flex flex-col flex-grow z-20 relative bg-gradient-to-t from-[#09040e] to-[#0c0514]">

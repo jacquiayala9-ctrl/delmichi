@@ -147,8 +147,8 @@ export default function Navbar() {
                   <Search size={14} />
                 </button>
               </form>
-              {user && (
-                <Link href={isAdmin ? "/admin" : "/perfil"} className="text-secondary hover:text-accent-violet transition-colors" aria-label="Ajustes">
+              {user && isAdmin && (
+                <Link href="/admin" className="text-secondary hover:text-accent-violet transition-colors" aria-label="Panel de Administración">
                   <Settings size={20} />
                 </Link>
               )}
