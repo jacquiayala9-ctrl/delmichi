@@ -34,7 +34,7 @@ export default function ProfilePage() {
         .eq('user_id', user.id)
 
       if (favData && favData.length > 0) {
-        const productIds = favData.map(f => f.product_id)
+        const productIds = favData.map((f: any) => f.product_id)
         const { data: productsData } = await supabase
           .from('products')
           .select('*')

@@ -26,6 +26,7 @@ export default function ProductCard({ id, name, price, category, imageUrl }: Pro
       image_url: imageUrl,
       descripcion: null,
       stock: 1,
+      destacado: false,
       created_at: new Date().toISOString()
     });
   };

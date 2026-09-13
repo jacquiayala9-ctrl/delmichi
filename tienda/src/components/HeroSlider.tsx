@@ -14,7 +14,7 @@ export default function HeroSlider() {
     const fetchHeroes = async () => {
       const { data } = await supabase.from('hero_gallery').select('*').order('created_at', { ascending: false })
       if (data && data.length > 0) {
-        setHeroImages(data.map(h => h.image_url))
+        setHeroImages(data.map((h: any) => h.image_url))
       } else {
         setHeroImages([])
       }
