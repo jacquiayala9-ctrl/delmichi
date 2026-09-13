@@ -178,3 +178,9 @@ Todas las tablas cuentan con políticas de seguridad integradas (RLS con `WITH C
 - Todo el público puede usar el comando `SELECT` en productos, categorías e imágenes, y puede hacer `INSERT` únicamente en la tabla de ventas (pero no modificar ni borrar ventas ajenas).
 - Solo las cuentas donde `role = 'admin'` tienen permisos de `INSERT`, `UPDATE` y `DELETE` para cambiar configuraciones de la tienda, productos, fotos y eliminar o editar el estado de las órdenes.
 
+### 6. Optimizaciones de Despliegue (Cloudflare) y UI Responsiva
+- **Optimización de Bundle (Límite 25MB):** Para evitar fallos en el despliegue de Cloudflare Pages (límite de memoria en Edge Functions), se eliminó `export const runtime = 'edge'` de las páginas estáticas (Inicio, Contactos, Términos) y se optimizó la importación de iconos (`lucide-react`) en el `next.config.ts`.
+- **Componentes Estáticos:** Se refactorizó el `Footer` y la página de Contactos para que utilicen un cliente estándar de `supabase-js` (sin lectura de cookies), permitiendo que Next.js los pre-renderice como HTML estático, ahorrando espacio en el servidor.
+- **Grilla Móvil de 3 Columnas:** Se actualizó el diseño responsivo de las grillas de productos en Inicio, Catálogo y Perfil para forzar 3 columnas en pantallas móviles (`grid-cols-3`). Se reescaló la tipografía, iconos y el relleno (padding) de las tarjetas (`ProductCard`) para que se ajusten estéticamente a espacios reducidos sin romperse.
+- **Tipado Estricto (TypeScript):** Se corrigieron todos los errores estrictos de tipado que interferían con el *build* (propiedades faltantes en inserciones al carrito como `destacado` y casteo explícito de datos dinámicos provenientes de la base de datos).
+

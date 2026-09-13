@@ -53,17 +53,17 @@ export default function ProductCard({ id, name, price, category, imageUrl }: Pro
       </Link>
 
       {/* Content */}
-      <div className="p-3 sm:p-5 flex flex-col flex-grow z-20 relative bg-gradient-to-t from-[#09040e] to-[#0c0514]">
-        <span className="text-accent-violet text-[0.55rem] sm:text-[0.65rem] uppercase tracking-[0.15em] mb-1 sm:mb-1.5 font-semibold">
+      <div className="p-2 sm:p-5 flex flex-col flex-grow z-20 relative bg-gradient-to-t from-[#09040e] to-[#0c0514]">
+        <span className="text-accent-violet text-[0.45rem] sm:text-[0.65rem] uppercase tracking-[0.1em] sm:tracking-[0.15em] mb-0.5 sm:mb-1.5 font-semibold truncate">
           {category}
         </span>
         <Link href={`/producto/${id}`} className="block mb-1 sm:mb-2">
-          <h3 className="font-heading text-sm sm:text-lg text-foreground hover:text-accent-violet transition-colors line-clamp-2 leading-snug">
+          <h3 className="font-heading text-xs sm:text-lg text-foreground hover:text-accent-violet transition-colors line-clamp-2 leading-tight sm:leading-snug">
             {name}
           </h3>
         </Link>
-        <div className="mt-auto flex items-center justify-between pt-2 sm:pt-4">
-          <span className="text-foreground text-xs sm:text-base font-medium">
+        <div className="mt-auto flex items-center justify-between pt-1 sm:pt-4">
+          <span className="text-foreground text-[0.65rem] sm:text-base font-medium">
             ${price.toLocaleString("es-AR", { minimumFractionDigits: 2 })}
           </span>
           <button 

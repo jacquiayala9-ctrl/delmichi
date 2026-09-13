@@ -98,7 +98,7 @@ export default function ProfilePage() {
               <Link href="/productos" className="text-accent-violet hover:underline">Explorar productos</Link>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-6">
               {favorites.map(product => (
                 <ProductCard 
                   key={product.id}

@@ -46,7 +46,7 @@ export default async function Home() {
               <p className="text-secondary/60 text-sm">Estamos forjando nuestras próximas joyas en las sombras.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8">
+            <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-6 md:gap-8">
               {featuredProducts.map((product) => (
                 <ProductCard 
                   key={product.id} 

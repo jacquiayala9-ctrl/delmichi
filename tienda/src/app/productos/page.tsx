@@ -165,7 +165,7 @@ export default async function Catalogo({
                <p className="text-secondary/60 text-sm">Vuelve pronto para ver nuestras novedades.</p>
              </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-6">
               {products.map((product) => (
                 <ProductCard 
                   key={product.id}
