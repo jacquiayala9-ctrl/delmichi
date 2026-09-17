@@ -23,6 +23,8 @@ type StoreSettings = {
   email: string
 }
 
+import { deleteOrdersAction, addHeroImageAction, deleteHeroImageAction } from './actions'
+
 export default function AdminDashboard({ initialProducts }: { initialProducts: Product[] }) {
   const [products, setProducts] = useState<Product[]>(initialProducts)
   const [isEditing, setIsEditing] = useState<Product | null>(null)
@@ -55,6 +57,7 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
 
   // Modals state
   const [isSelectingImage, setIsSelectingImage] = useState<{onSelect: (url: string) => void} | null>(null)
+  const [isViewingImage, setIsViewingImage] = useState<string | null>(null)
   const [tempImageUrl, setTempImageUrl] = useState<string>('')
   const [tempDestacado, setTempDestacado] = useState<boolean>(false)
   
@@ -132,9 +135,9 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
     if (selectedOrders.length === 0) return
     if (!confirm(`¿Estás seguro de que quieres borrar ${selectedOrders.length} venta(s)? Esta acción no se puede deshacer.`)) return
 
-    const { error } = await supabase.from('orders').delete().in('id', selectedOrders)
-    if (error) {
-      alert('Error al borrar ventas: ' + error.message)
+    const res = await deleteOrdersAction(selectedOrders)
+    if (!res.success) {
+      alert('Error al borrar ventas: ' + res.error)
     } else {
       setOrders(orders.filter(o => !selectedOrders.includes(o.id)))
       setSelectedOrders([])
@@ -228,19 +231,18 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
   const handleAddImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!tempImageUrl) return alert("Selecciona una imagen.")
-    // @ts-ignore
-    const { data, error } = await supabase.from('hero_gallery').insert([{ image_url: tempImageUrl } as any]).select()
-    if (error) alert('Error: ' + error.message)
+    const res = await addHeroImageAction(tempImageUrl)
+    if (!res.success) alert('Error: ' + res.error)
     else {
-      if (data) setGallery([data[0], ...gallery])
+      if (res.data) setGallery([res.data[0], ...gallery])
       setIsAddingImage(false)
     }
   }
 
   const handleDeleteImage = async (id: string) => {
     if (!confirm('¿Quitar de la portada?')) return
-    const { error } = await supabase.from('hero_gallery').delete().eq('id', id)
-    if (error) alert('Error: ' + error.message)
+    const res = await deleteHeroImageAction(id)
+    if (!res.success) alert('Error: ' + res.error)
     else setGallery(gallery.filter(g => g.id !== id))
   }
 
@@ -411,15 +413,27 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
       {/* GALLERY TAB */}
       {activeTab === 'gallery' && (
         <>
-          <button onClick={() => { setTempImageUrl(''); setIsAddingImage(true); }} className="mb-6 flex items-center gap-2 bg-accent-violet hover:bg-accent-violet/80 text-white px-4 py-2 rounded-md transition-all">
+          <button onClick={() => { 
+            if (mediaList.length === 0) loadMedia();
+            setIsSelectingImage({ onSelect: async (url) => {
+              const res = await addHeroImageAction(url)
+              if (!res.success) alert('Error: ' + res.error)
+              else if (res.data) setGallery([res.data[0], ...gallery])
+            }})
+          }} className="mb-6 flex items-center gap-2 bg-accent-violet hover:bg-accent-violet/80 text-white px-4 py-2 rounded-md transition-all">
             <Plus size={18} /> Añadir Imagen a Portada
           </button>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {gallery.map(item => (
               <div key={item.id} className="relative group rounded-lg overflow-hidden border border-zinc-800 aspect-square bg-zinc-900">
-                <img src={item.image_url} alt="Gallery" className="w-full h-full object-cover" />
-                <button onClick={() => handleDeleteImage(item.id)} className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+                <img 
+                  src={item.image_url} 
+                  alt="Gallery" 
+                  className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform" 
+                  onClick={() => setIsViewingImage(item.image_url)}
+                />
+                <button onClick={() => handleDeleteImage(item.id)} className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10">
                   <Trash2 size={16} />
                 </button>
               </div>
@@ -443,11 +457,16 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {mediaList.map(media => (
               <div key={media.path} className="relative group rounded-lg overflow-hidden border border-zinc-800 aspect-square bg-zinc-900">
-                <img src={media.url} alt={media.name} className="w-full h-full object-cover" />
-                <button onClick={() => handleDeleteMedia(media.path)} className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all">
+                <img 
+                  src={media.url} 
+                  alt={media.name} 
+                  className="w-full h-full object-cover cursor-pointer hover:scale-105 transition-transform" 
+                  onClick={() => setIsViewingImage(media.url)}
+                />
+                <button onClick={() => handleDeleteMedia(media.path)} className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 text-white p-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10">
                   <Trash2 size={14} />
                 </button>
-                <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 p-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
                   <p className="text-[10px] text-zinc-300 truncate text-center">{media.name}</p>
                 </div>
               </div>
@@ -618,6 +637,21 @@ export default function AdminDashboard({ initialProducts }: { initialProducts: P
               </label>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Modal Full Screen Image Viewer */}
+      {isViewingImage && (
+        <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-[70] p-4 backdrop-blur-sm" onClick={() => setIsViewingImage(null)}>
+          <button onClick={() => setIsViewingImage(null)} className="absolute top-4 right-4 text-zinc-400 hover:text-white p-2 z-50">
+            <X size={32} />
+          </button>
+          <img 
+            src={isViewingImage} 
+            alt="Preview" 
+            className="max-w-full max-h-[90vh] object-contain border border-zinc-800 shadow-2xl" 
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
 
